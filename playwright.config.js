@@ -17,6 +17,7 @@ const config = defineConfig({
     headless: true, // Required for Azure Linux cloud containers
     screenshot: 'on',
     trace: 'on',
+    video: 'on',
   },
 
   projects: [
@@ -26,7 +27,7 @@ const config = defineConfig({
   ],
 
   reporter: [
-    ['html'],
+    ['html', { open: 'never' }],
     ['junit', { outputFile: 'results.xml' }],
   ],
 });
