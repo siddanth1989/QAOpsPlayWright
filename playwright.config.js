@@ -3,18 +3,21 @@ const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, 'tests', '.env') });
 
 const config = defineConfig({
-  testDir: './tests',
+  testDir: path.join(__dirname, 'tests'),
   testIgnore: [
+    '**/Code/**',
+    '**/manual_tests/**',
     '**/PlayWrightAutomation Tutor Code/**',
     '**/playwright-migration-fox/**',
-    '**/Code/**',
+    '**/*hrmstest*',
+    '**/*WebAPIUtils*',
   ],
   testMatch: /.*\.spec\.js$/,
   timeout: 30 * 1000,
 
   use: {
     browserName: 'chromium',
-    headless: true, // Required for Azure Linux cloud containers
+    headless: true,
     screenshot: 'on',
     trace: 'on',
     video: 'on',
