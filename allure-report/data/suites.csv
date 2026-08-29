@@ -1,0 +1,7 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","9276","@Web Browser Context Playwright test","chrome","2026-08-07","passed","2026-08-07","","UIBasicstest.spec.js","",""
+"","8134","@Web Client App login","chrome","2026-08-07","passed","2026-08-07","","ClientAppTutorCode.spec.js","",""
+"","14754","@Web Client App login","chrome","2026-08-07","passed","2026-08-07","","ClientAppPO.spec.js","",""
+"","11259","@API Place the order","chrome","2026-08-07","passed","2026-08-07","","WebAPIPart1.spec.js","",""
+"","14070","@Web Popup validations","chrome","2026-08-07","passed","2026-08-07","","MoreValidations.spec.js","",""
+"","1604","@API Test Case 2","chrome","2026-08-07","passed","2026-08-07","","WebAPIPart2.spec.js","",""

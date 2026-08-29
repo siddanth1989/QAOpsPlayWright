@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-900 text-white font-sans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>June-July 2025 QA Report</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            box-sizing: border-box;
+            background-size: cover;
+            background-position: center;
+        }
+        .slide.active {
+            display: flex;
+        }
+        .slide-content {
+            background-color: rgba(31, 41, 55, 0.8);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            width: 90%;
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #d1d5db;
+        }
+        .subtitle {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #9ca3af;
+        }
+        .card {
+            background-color: #1f2937;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .chart-container {
+            width: 100%;
+            height: 100%;
+        }
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            color: #d1d5db;
+            font-size: 1.25rem;
+            z-index: 100;
+        }
+        .nav-button {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            background-color: rgba(31, 41, 55, 0.7);
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+        }
+        .nav-button:hover {
+            background-color: rgba(55, 65, 81, 0.7);
+        }
+        
+        /* Print-specific styles for PDF conversion */
+        @media print {
+            body {
+                background-color: #111827 !important;
+                color: #d1d5db !important;
+            }
+            .slide-content {
+                background-color: rgba(31, 41, 55, 0.9) !important;
+                color: #d1d5db !important;
+                box-shadow: none !important;
+                width: 100% !important;
+                height: 100% !important;
+                padding: 0 !important;
+            }
+            .slide {
+                display: flex !important;
+                page-break-after: always;
+                width: 100% !important;
+                height: 100vh !important;
+                padding: 1rem !important;
+            }
+            .slide:last-child {
+                page-break-after: avoid;
+            }
+            .navigation, .nav-button, .slide-counter {
+                display: none !important;
+            }
+            .title {
+                color: #d1d5db !important;
+            }
+            .subtitle {
+                color: #9ca3af !important;
+            }
+            .card {
+                background-color: #1f2937 !important;
+                box-shadow: none !important;
+            }
+            canvas {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center h-screen overflow-hidden">
+
+    <!-- Slide 1: Agenda -->
+    <div id="slide-1" class="slide active">
+        <div class="slide-content text-center space-y-8">
+            <h1 class="title">June - July 2025 QA Report</h1>
+            <p class="subtitle">A brief overview of our team's performance and achievements.</p>
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+                <div class="card p-6 flex flex-col items-center">
+                    <i class="fas fa-list-check text-4xl mb-4 text-emerald-400"></i>
+                    <p class="text-xl font-semibold">Release & Environment Status</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center">
+                    <i class="fas fa-file-invoice text-4xl mb-4 text-sky-400"></i>
+                    <p class="text-xl font-semibold">Test Case Execution</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center">
+                    <i class="fas fa-robot text-4xl mb-4 text-fuchsia-400"></i>
+                    <p class="text-xl font-semibold">Automation & Coverage</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center">
+                    <i class="fas fa-chart-line text-4xl mb-4 text-rose-400"></i>
+                    <p class="text-xl font-semibold">Test Run Results (Test Rail)</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center">
+                    <i class="fas fa-bug text-4xl mb-4 text-orange-400"></i>
+                    <p class="text-xl font-semibold">Operative Tickets Raised</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center">
+                    <i class="fas fa-circle-exclamation text-4xl mb-4 text-amber-400"></i>
+                    <p class="text-xl font-semibold">Challenges & Notes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: June-July 2025.csv -->
+    <div id="slide-2" class="slide">
+        <div class="slide-content text-center space-y-6">
+            <h2 class="title">Release/Patch Count by Environment</h2>
+            <p class="subtitle">A summary of the total patches tested in each environment.</p>
+            <div class="w-full flex-grow flex flex-col items-center justify-center space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-2xl">
+                    <div class="card p-6 text-center bg-emerald-600">
+                        <p class="text-5xl font-bold" id="totalPatches"></p>
+                        <p class="text-gray-200 text-lg">Total Patches Tested</p>
+                    </div>
+                    <div class="card p-6 text-center bg-indigo-600">
+                        <p class="text-5xl font-bold" id="uatPatches"></p>
+                        <p class="text-gray-200 text-lg">Patches in UAT</p>
+                    </div>
+                    <div class="card p-6 text-center bg-fuchsia-600">
+                        <p class="text-5xl font-bold" id="preprodPatches"></p>
+                        <p class="text-gray-200 text-lg">Patches in PreProd</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Manual Test Cases Executed.csv -->
+    <div id="slide-3" class="slide">
+        <div class="slide-content space-y-6">
+            <h2 class="title">New Manual Test Cases by Release</h2>
+            <p class="subtitle">A quick summary of the number of new test cases added for each release.</p>
+            <div class="w-full flex-grow flex flex-col items-center justify-center space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl">
+                    <div class="card p-6 text-center bg-sky-600">
+                        <p class="text-5xl font-bold">19</p>
+                        <p class="text-gray-200 text-lg">New Test Cases (2025.6)</p>
+                    </div>
+                    <div class="card p-6 text-center bg-fuchsia-600">
+                        <p class="text-5xl font-bold">4</p>
+                        <p class="text-gray-200 text-lg">New Test Cases (2025.7)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Manual Test Cases Executed.csv -->
+    <div id="slide-4" class="slide">
+        <div class="slide-content space-y-6">
+            <h2 class="title">Test Case Breakdown by Module</h2>
+            <p class="subtitle">Total test cases per module up to the 2025.7 release.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full flex-grow">
+                <div class="flex flex-col items-center justify-center">
+                    <div class="chart-container w-full h-full max-w-sm">
+                        <canvas id="manualTestCasesPieChart"></canvas>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="card text-center p-6 bg-purple-600">
+                        <p class="text-4xl font-bold" id="totalTestCases_duplicate"></p>
+                        <p class="text-gray-200 text-lg">Total Test Cases</p>
+                    </div>
+                    <div class="card text-center p-6 bg-indigo-600">
+                        <p class="text-4xl font-bold">19</p>
+                        <p class="text-gray-200 text-lg">June 2025 Cases</p>
+                    </div>
+                    <div class="card text-center p-6 bg-blue-600">
+                        <p class="text-4xl font-bold">4</p>
+                        <p class="text-gray-200 text-lg">July 2025 Cases</p>
+                    </div>
+                    <div class="card text-center p-6 bg-teal-600">
+                        <p class="text-4xl font-bold">552</p>
+                        <p class="text-gray-200 text-lg">Total Test Cases (2025.7)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Automation Scripts Created.csv -->
+    <div id="slide-5" class="slide">
+        <div class="slide-content space-y-6">
+            <h2 class="title">Automation & Coverage</h2>
+            <p class="subtitle">Analysis of automation efforts and test case coverage increase.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full flex-grow">
+                <div class="flex flex-col items-center justify-center space-y-6">
+                    <div class="card text-center p-8 bg-sky-600 w-full">
+                        <p class="text-5xl font-bold">76%</p>
+                        <p class="text-gray-200 text-lg mt-2">Automation Coverage</p>
+                    </div>
+                    <div class="card text-center p-8 bg-rose-600 w-full">
+                        <p class="text-5xl font-bold">24%</p>
+                        <p class="text-gray-200 text-lg mt-2">Not Automated</p>
+                    </div>
+                    <div class="card text-center p-8 bg-orange-600 w-full">
+                        <p class="text-3xl font-bold">548 to 552</p>
+                        <p class="text-gray-200 text-lg mt-2">Test Case Coverage Increase</p>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center">
+                    <div class="chart-container w-full h-full max-w-sm">
+                        <canvas id="automationPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Slide 6: Test Rail.csv -->
+    <div id="slide-6" class="slide">
+        <div class="slide-content space-y-6">
+            <h2 class="title">Test Run Results (Test Rail)</h2>
+            <p class="subtitle">Breakdown of passed, failed, and retested cases per release.</p>
+            <div class="w-full h-2/3">
+                <canvas id="testRailBarChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Operative Tickets Raised.csv -->
+    <div id="slide-7" class="slide">
+        <div class="slide-content space-y-6">
+            <h2 class="title">Operative Tickets Raised</h2>
+            <p class="subtitle">Tickets raised per release, categorized by type.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full flex-grow">
+                <div class="flex flex-col items-center justify-center">
+                    <div class="chart-container w-full h-full max-w-lg">
+                        <canvas id="ticketsStackedBarChart"></canvas>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center space-y-4">
+                    <div class="card text-center p-8 bg-emerald-600 w-full">
+                        <p class="text-5xl font-bold">39</p>
+                        <p class="text-gray-200 text-lg mt-2">Total Tickets Raised</p>
+                    </div>
+                    <div class="flex gap-4 w-full justify-center">
+                        <div class="card p-6 bg-red-600 text-center">
+                             <p class="text-xl font-bold">12</p>
+                             <p class="text-gray-200">Regression</p>
+                        </div>
+                        <div class="card p-6 bg-fuchsia-600 text-center">
+                            <p class="text-xl font-bold">8</p>
+                            <p class="text-gray-200 text-lg">New Functionality</p>
+                        </div>
+                        <div class="card p-6 bg-yellow-600 text-center">
+                            <p class="text-xl font-bold">11</p>
+                            <p class="text-gray-200 text-lg">Environmental</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Slide 8: QA Challenges -->
+    <div id="slide-8" class="slide">
+        <div class="slide-content space-y-6 overflow-y-auto">
+            <h2 class="title">QA Challenges</h2>
+            <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6" id="qa-challenges-container">
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: DM & Notes -->
+    <div id="slide-9" class="slide">
+        <div class="slide-content space-y-6 overflow-y-auto">
+            <h2 class="title">DM & Notes</h2>
+            <div class="w-full grid grid-cols-1 gap-6" id="dm-notes-container">
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Thank You -->
+    <div id="slide-10" class="slide">
+        <div class="slide-content text-center space-y-8">
+            <h1 class="title text-5xl">Thank You!</h1>
+            <p class="text-xl text-gray-300">We appreciate your time and attention.</p>
+            <i class="fas fa-handshake text-6xl text-purple-400 mt-8"></i>
+        </div>
+    </div>
+
+
+    <!-- Navigation controls -->
+    <div class="navigation">
+        <div id="prev" class="nav-button">
+            <i class="fas fa-chevron-left"></i> Previous
+        </div>
+        <div id="counter" class="nav-button cursor-default">
+            1 / 10
+        </div>
+        <div id="next" class="nav-button">
+            Next <i class="fas fa-chevron-right"></i>
+        </div>
+    </div>
+
+    <script>
+        // Data from the CSV files embedded directly
+        const dataJuneJuly = [
+            { "Release/Patches Tested": "2025.6.0", "Environment": "UAT" },
+            { "Release/Patches Tested": "2025.6.1", "Environment": "UAT" },
+            { "Release/Patches Tested": "2025.6.2", "Environment": "UAT" },
+            { "Release/Patches Tested": "2025.6.3", "Environment": "UAT" },
+            { "Release/Patches Tested": "2025.6.4", "Environment": "PreProd" },
+            { "Release/Patches Tested": "2025.7.0", "Environment": "UAT" }
+        ];
+
+        const dataManualTestCases = [
+            { "Till Release": "2025.7", "Module": "Product", "Value": 40, "2025.6 Test Cases": null, "2025.7 Test Cases": null },
+            { "Till Release": null, "Module": "Ratecard", "Value": 104, "2025.6 Test Cases": null, "2025.7 Test Cases": null },
+            { "Till Release": null, "Module": "Plan", "Value": 229, "2025.6 Test Cases": 17, "2025.7 Test Cases": 3 },
+            { "Till Release": null, "Module": "Inventory", "Value": 78, "2025.6 Test Cases": 2, "2025.7 Test Cases": 1 },
+            { "Till Release": null, "Module": "Product Reports", "Value": 8, "2025.6 Test Cases": null, "2025.7 Test Cases": null },
+            { "Till Release": null, "Module": "Ratecard Reports", "Value": 23, "2025.6 Test Cases": null, "2025.7 Test Cases": null },
+            { "Till Release": null, "Module": "Plan Reports", "Value": 46, "2025.6 Test Cases": null, "2025.7 Test Cases": null },
+            { "Till Release": null, "Module": "Flowchart Reports", "Value": 24, "2025.6 Test Cases": null, "2025.7 Test Cases": null },
+            { "Till Release": null, "Module": "Total", "Value": 552, "2025.6 Test Cases": 19, "2025.7 Test Cases": 4 }
+        ];
+
+        const dataAutomation = {
+            "Test Case % Coverage Increase": "548 to 552",
+            "Automation %": 0.76,
+            "Not Automated": 0.24
+        };
+        
+        const dataTestRail = [
+            { "Test Runs": "2025.6", "Passed": 540, "Failed": 1, "Retested": 7 },
+            { "Test Runs": "2025.6.1", "Passed": 540, "Failed": 4, "Retested": 4 },
+            { "Test Runs": "2025.6.2", "Passed": 543, "Failed": 0, "Retested": 5 },
+            { "Test Runs": "2025.6.3", "Passed": 546, "Failed": 2, "Retested": 0 },
+            { "Test Runs": "2025.7", "Passed": 552, "Failed": 2, "Retested": 5 }
+        ];
+
+        const dataOperativeTickets = [
+            { "Release/Patch": "2025.6.0", "Environmental": 4, "Regression": 3, "Failed New Functionality": 1, "Total": 8 },
+            { "Release/Patch": "2025.6.1", "Environmental": 1, "Regression": 9, "Failed New Functionality": 2, "Total": 12 },
+            { "Release/Patch": "2025.6.2", "Environmental": 3, "Regression": 4, "Failed New Functionality": 0, "Total": 7 },
+            { "Release/Patch": "2025.6.3", "Environmental": 0, "Regression": 1, "Failed New Functionality": 0, "Total": 1 },
+            { "Release/Patch": "2025.7.0", "Environmental": 3, "Regression": 5, "Failed New Functionality": 3, "Total": 11 }
+        ];
+        const totalOperativeTickets = dataOperativeTickets.reduce((sum, item) => sum + item.Total, 0);
+        
+        // I've simplified the challenges array here for easier population of the new slides
+        const consolidatedChallenges = {
+            digital: [
+                "Digital regression test case automation is at **40%**. We are actively updating scripts to adapt to new changes.",
+                "The existing test scripts are outdated. Access to **current scripts and documentation is required** to adapt to new features."
+            ],
+            fts: [
+                "The team has developed scripts for **8 deals** (2 in each Order Type) to be used for automation.",
+                "FTS required Xpath updates due to changes in product and package names in the **2025.7** release."
+            ],
+            dm: [
+                "Provide clear expectations for the QA team regarding DM environment testing."
+            ],
+            notes: [
+                "The process of running and analyzing scripts for each release is a continuous effort that requires significant time and resources for fixing issues and adapting to new changes.",
+                "The test scripts that we currently have are pretty old. We would require latest test scripts or documentation(if any) to understand the functionality to be able to adapt to new features/changes implemented."
+            ]
+        };
+
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const counterElement = document.getElementById('counter');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            currentSlideIndex = index;
+            counterElement.textContent = `${currentSlideIndex + 1} / ${totalSlides}`;
+        }
+
+        function nextSlide() {
+            if (currentSlideIndex < totalSlides - 1) {
+                showSlide(currentSlideIndex + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlideIndex > 0) {
+                showSlide(currentSlideIndex - 1);
+            }
+        }
+
+        function createJuneJulyTable() {
+            const envCounts = dataJuneJuly.reduce((acc, current) => {
+                const env = current.Environment;
+                acc[env] = (acc[env] || 0) + 1;
+                return acc;
+            }, {});
+
+            document.getElementById('totalPatches').textContent = dataJuneJuly.length;
+            document.getElementById('uatPatches').textContent = envCounts['UAT'] || 0;
+            document.getElementById('preprodPatches').textContent = envCounts['PreProd'] || 0;
+        }
+
+        function createManualTestCasesPieChart() {
+            const ctx = document.getElementById('manualTestCasesPieChart').getContext('2d');
+            const data = dataManualTestCases.filter(d => d.Module !== 'Total' && d.Value > 0);
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: data.map(d => d.Module),
+                    datasets: [{
+                        data: data.map(d => d.Value),
+                        backgroundColor: ['#f87171', '#fb923c', '#eab308', '#a3e635', '#22c55e', '#14b8a6', '#06b6d4', '#3b82f6'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#9ca3af',
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Total Test Cases by Module (Value)',
+                            color: '#e5e7eb',
+                            font: { size: 18 }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function populateTestCasesTotal() {
+             const total = dataManualTestCases.find(d => d.Module === 'Total');
+             document.getElementById('totalTestCases_duplicate').textContent = total.Value;
+        }
+
+        function createAutomationPieChart() {
+            const ctx = document.getElementById('automationPieChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Automation %', 'Not Automated'],
+                    datasets: [{
+                        data: [dataAutomation['Automation %'], dataAutomation['Not Automated']],
+                        backgroundColor: ['#34d399', '#f87171'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#9ca3af',
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Automation Coverage',
+                            color: '#e5e7eb',
+                            font: { size: 18 }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createTestRailBarChart() {
+            const ctx = document.getElementById('testRailBarChart').getContext('2d');
+            const releases = dataTestRail.map(d => d['Test Runs']);
+            const passed = dataTestRail.map(d => d['Passed']);
+            const failed = dataTestRail.map(d => d['Failed']);
+            const retested = dataTestRail.map(d => d['Retested']);
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: releases,
+                    datasets: [
+                        {
+                            label: 'Passed',
+                            data: passed,
+                            backgroundColor: '#10b981'
+                        },
+                        {
+                            label: 'Failed',
+                            data: failed,
+                            backgroundColor: '#ef4444'
+                        },
+                        {
+                            label: 'Retested',
+                            data: retested,
+                            backgroundColor: '#f59e0b'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#9ca3af' } },
+                        title: { display: true, text: 'Test Rail Results by Release', color: '#e5e7eb', font: { size: 18 } }
+                    },
+                    scales: {
+                        x: { stacked: false, ticks: { color: '#9ca3af' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
+                        y: { stacked: false, ticks: { color: '#9ca3af' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } }
+                    }
+                }
+            });
+        }
+
+        function createTicketsStackedBarChart() {
+            const ctx = document.getElementById('ticketsStackedBarChart').getContext('2d');
+            const releases = dataOperativeTickets.map(d => d['Release/Patch']);
+            const environmental = dataOperativeTickets.map(d => d['Environmental']);
+            const regression = dataOperativeTickets.map(d => d['Regression']);
+            const failedNewFunctionality = dataOperativeTickets.map(d => d['Failed New Functionality']);
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: releases,
+                    datasets: [
+                        {
+                            label: 'Environmental',
+                            data: environmental,
+                            backgroundColor: '#a78bfa'
+                        },
+                        {
+                            label: 'Regression',
+                            data: regression,
+                            backgroundColor: '#60a5fa'
+                        },
+                        {
+                            label: 'Failed New Functionality',
+                            data: failedNewFunctionality,
+                            backgroundColor: '#f472b6'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#9ca3af' } },
+                        title: { display: true, text: 'Operative Tickets by Type', color: '#e5e7eb', font: { size: 18 } }
+                    },
+                    scales: {
+                        x: { stacked: true, ticks: { color: '#9ca3af' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
+                        y: { stacked: true, ticks: { color: '#9ca3af' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } }
+                    }
+                }
+            });
+        }
+        
+        function createQAChallengesContent() {
+            const container = document.getElementById('qa-challenges-container');
+            if (!container) return;
+            container.innerHTML = `
+                <div class="card p-6 md:col-span-1">
+                    <h3 class="text-2xl font-bold mb-4 text-purple-400">Digital Challenges</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-400">
+                        <li>Digital regression test case automation is at **40%**. We are actively updating scripts to adapt to new changes.</li>
+                        <li>The existing test scripts are outdated. Access to **current scripts and documentation is required** to adapt to new features.</li>
+                    </ul>
+                </div>
+                <div class="card p-6 md:col-span-1">
+                    <h3 class="text-2xl font-bold mb-4 text-purple-400">FTS Challenges</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-400">
+                        <li>The team has developed scripts for **8 deals** (2 in each Order Type) to be used for automation.</li>
+                        <li>FTS required Xpath updates due to changes in product and package names in the **2025.7** release.</li>
+                    </ul>
+                </div>
+            `;
+        }
+        
+        function createDmNotesContent() {
+            const dmContainer = document.getElementById('dm-notes-container');
+            if (!dmContainer) return;
+            dmContainer.innerHTML = `
+                <div class="card p-6">
+                    <h3 class="text-2xl font-bold mb-4 text-purple-400">DM</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-400">
+                        <li>Provide clear expectations for the QA team regarding DM environment testing.</li>
+                    </ul>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-2xl font-bold mb-4 text-purple-400">General Notes</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-400">
+                        <li>The process of running and analyzing scripts for each release is a continuous effort that requires significant time and resources for fixing issues and adapting to new changes.</li>
+                        <li>The test scripts that we currently have are pretty old. We would require latest test scripts or documentation(if any) to understand the functionality to be able to adapt to new features/changes implemented.</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            showSlide(0); // Start on the first slide
+            createJuneJulyTable();
+            createManualTestCasesPieChart();
+            populateTestCasesTotal();
+            createAutomationPieChart();
+            createTestRailBarChart();
+            createTicketsStackedBarChart();
+            createQAChallengesContent();
+            createDmNotesContent();
+            
+            document.getElementById('next').addEventListener('click', nextSlide);
+            document.getElementById('prev').addEventListener('click', prevSlide);
+        
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>

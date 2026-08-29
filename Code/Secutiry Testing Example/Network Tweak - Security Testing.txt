@@ -1,0 +1,1 @@
+Example: When you are trying to view an order that belongs to other count. You should get an error that You are not authorized to view this

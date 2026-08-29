@@ -1,0 +1,4 @@
+Describe the relationship between Browser, Browser Context, and Page in Playwright's architecture.
+Explain the purpose of a key Playwright feature like the Codegen tool or Network Interception.
+Mention at least one built-in Playwright feature that helps with debugging a failing test (e.g., Tracing, automatic screenshots/videos).
+Communicate your answers confidently and professionally throughout the interview.

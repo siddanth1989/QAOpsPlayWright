@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AOS/OnAir QA Activities - June-July 2025</title>
+    <!-- Tailwind CSS is included for the report's layout -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js is included for rendering the charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            background-color: #001D3D;
+            color: #fff;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        /* START: Styles for Print (PDF/PPT Conversion) */
+        @media print {
+            /* Define consistent page size and margins for PDF */
+            @page {
+                size: A4 portrait;
+                margin: 0.5in;
+            }
+
+            html, body {
+                width: 100%;
+                height: auto;
+                background-color: #001D3D !important;
+                color: #fff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+
+            /* Hide navigational elements not needed in print */
+            .no-print {
+                display: none !important;
+            }
+
+            /* Main content area should utilize full print width */
+            main {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-sizing: border-box;
+            }
+
+            /* Each section will become a new "page" or "slide" */
+            section {
+                box-sizing: border-box !important;
+                min-height: 100vh !important; /* Force each section to be a full page height for vertical centering */
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 2rem !important;
+                page-break-after: always !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important; /* Center content vertically on the page */
+                align-items: center !important; /* Center content horizontally on the page */
+                text-align: center !important;
+                background-color: #001D3D !important; /* Ensures the background color is printed */
+            }
+            
+            /* Specific print override for the first slide to left-align its body text and list */
+            #summary-and-agenda .text-lg.text-white {
+                text-align: left !important;
+            }
+            #summary-and-agenda ul {
+                text-align: left !important;
+            }
+            
+            /* The following ensures a section does not get split between pages */
+            .page-break-avoid {
+                page-break-inside: avoid !important;
+            }
+
+            /* Ensure main titles and descriptions within sections are centered */
+            section h2, section h3 {
+                text-align: center !important;
+            }
+
+            /* Chart containers adjustments for print */
+            .chart-container {
+                page-break-inside: avoid !important;
+                display: block;
+                height: auto !important;
+                max-height: 80vh !important;
+                width: 90% !important;
+                margin: 0 auto !important;
+            }
+            /* Ensure the canvas itself scales correctly within its container */
+            canvas {
+                max-width: 100% !important;
+                max-height: 100% !important;
+            }
+
+            /* Ensure grid layouts take full width and items are centered */
+            .grid {
+                display: block !important;
+                width: 100% !important;
+                max-width: none !important;
+            }
+            .grid > div {
+                margin: auto;
+                text-align: center;
+            }
+
+            /* Specific override for list items in challenges to keep them left-aligned for readability */
+            #challenges ul, #past-challenges ul {
+                text-align: left !important;
+                list-style-position: inside !important;
+                padding-left: 0 !important;
+            }
+            #challenges li, #past-challenges li {
+                margin-left: 0 !important;
+            }
+            
+            /* Ensure the two chart sections start on new pages */
+            #tickets, #testrail {
+                page-break-before: always !important;
+                min-height: 100vh !important;
+            }
+        }
+        /* END: Styles for Print (PDF/PPT Conversion) */
+    </style>
+</head>
+<body class="bg-[#001D3D] text-white">
+    <header class="bg-[#002855] shadow-lg no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <h1 class="text-3xl md:text-4xl font-bold text-center text-[#BDE0FE]">AOS/OnAir QA Activities Report</h1>
+            <p class="text-center text-white text-sm md:text-base mt-2"><strong>June - July 2025</strong></p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-8">
+        
+        <!-- Combined Summary and Agenda Section -->
+        <section id="summary-and-agenda">
+            <div class="flex flex-col justify-center items-center h-full">
+                <h2 class="text-3xl font-bold text-center text-[#BDE0FE] mb-6">QA Performance Summary</h2>
+                <p class="text-lg text-white mb-6 max-w-2xl mx-auto text-left">
+                    This report provides a comprehensive overview of the Quality Assurance activities performed for the AOS/OnAir platform during the June-July 2025 period. It covers manual testing, automation progress, defect tracking, and release performance metrics.
+                </p>
+                <h3 class="text-2xl font-semibold text-center text-[#BDE0FE] mt-10 mb-6">Report Agenda</h3>
+                <ul class="list-disc list-inside space-y-4 text-lg text-white text-left w-full max-w-xl mx-auto">
+                    <li>Performance Metrics</li>
+                    <li>Releases & Patches Tested</li>
+                    <li>New Manual Test Cases</li>
+                    <li>Total Manual Test Case Distribution</li>
+                    <li>Overall Automation Coverage</li>
+                    <li>Key Digital and FTS Challenges & Highlights</li>
+                    <li>Operative Tickets Analysis</li>
+                    <li>Test Rail Execution Performance</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- New section for the metrics boxes -->
+        <section id="performance-metrics">
+             <div class="flex flex-col justify-center items-center h-full">
+                <h2 class="text-3xl font-bold text-center text-[#BDE0FE] mb-10">Key Performance Metrics</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center w-full max-w-4xl">
+                    <div class="bg-[#002D62] p-8 rounded-xl shadow-lg border-b-4 border-[#48CAE4]">
+                        <p class="text-5xl font-bold text-[#BDE0FE]">552</p>
+                        <p class="text-lg text-white mt-2">Manual Tests Executed</p>
+                    </div>
+                    <div class="bg-[#002D62] p-8 rounded-xl shadow-lg border-b-4 border-[#ADE8F4]">
+                        <p class="text-5xl font-bold text-[#BDE0FE]">11</p>
+                        <p class="text-lg text-white mt-2">Operative Tickets Raised</p>
+                    </div>
+                    <div class="bg-[#002D62] p-8 rounded-xl shadow-lg border-b-4 border-[#0077B6]">
+                        <p class="text-5xl font-bold text-[#BDE0FE]">76%</p>
+                        <p class="text-lg text-white mt-2">Overall Automation</p>
+                    </div>
+                    <div class="bg-[#002D62] p-8 rounded-xl shadow-lg border-b-4 border-[#00B4D8]">
+                        <p class="text-5xl font-bold text-[#BDE0FE]">40%</p>
+                        <p class="text-lg text-white mt-2">Digital Automation</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Releases & Patches Section -->
+        <section id="releases">
+            <div class="flex flex-col justify-center items-center h-full">
+                <h2 class="text-3xl font-bold text-center text-[#BDE0FE] mb-10">Releases & Patches Tested</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center w-full max-w-4xl">
+                    
+                    <div class="bg-[#002D62] p-8 rounded-xl shadow-lg border-l-4 border-[#90E0EF]">
+                        <p class="font-bold text-2xl text-[#BDE0FE]">AOS 2025.6.0</p>
+                        <p class="text-lg text-white mt-2">UAT</p>
+                    </div>
+                    <div class="bg-[#002D62] p-8 rounded-xl shadow-lg border-l-4 border-[#90E0EF]">
+                        <p class="font-bold text-2xl text-[#BDE0FE]">AOS 2025.6.1</p>
+                        <p class="text-lg text-white mt-2">UAT</p>
+                    </div>
+                    <div class="bg-[#002D62] p-8 rounded-xl shadow-lg border-l-4 border-[#90E0EF]">
+                        <p class="font-bold text-2xl text-[#BDE0FE]">AOS 2025.6.2</p>
+                        <p class="text-lg text-white mt-2">UAT</p>
+                    </div>
+                    <div class="bg-[#002D62] p-8 rounded-xl shadow-lg border-l-4 border-[#90E0EF]">
+                        <p class="font-bold text-2xl text-[#BDE0FE]">AOS 2025.6.3</p>
+                        <p class="text-lg text-white mt-2">UAT</p>
+                    </div>
+                    <div class="bg-[#002D62] p-8 rounded-xl shadow-lg border-l-4 border-[#90E0EF]">
+                        <p class="font-bold text-2xl text-[#BDE0FE]">AOS 2025.6.4</p>
+                        <p class="text-lg text-white mt-2">PreProd</p>
+                    </div>
+                     <div class="bg-[#002D62] p-8 rounded-xl shadow-lg border-l-4 border-[#90E0EF]">
+                        <p class="font-bold text-2xl text-[#BDE0FE]">AOS 2025.7.0</p>
+                        <p class="text-lg text-white mt-2">UAT</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Manual Test Cases Executed Section -->
+        <section id="new-manual-tests">
+            <div class="flex flex-col justify-center items-center h-full">
+                <h2 class="text-3xl font-bold text-center text-[#BDE0FE] mb-10">New Test Cases</h2>
+                <div class="bg-[#002D62] rounded-xl shadow-lg p-8 w-full max-w-xl">
+                    <h3 class="text-xl font-bold text-[#BDE0FE] mb-4 text-center">2025.6 Test Cases</h3>
+                    <div class="grid grid-cols-2 gap-6 text-center">
+                        <div class="bg-[#003D7D] p-6 rounded-lg">
+                            <p class="text-3xl font-bold text-[#BDE0FE]">17</p>
+                            <p class="text-lg text-white mt-1">Plan</p>
+                        </div>
+                        <div class="bg-[#003D7D] p-6 rounded-lg">
+                            <p class="text-3xl font-bold text-[#BDE0FE]">2</p>
+                            <p class="text-lg text-white mt-1">Inventory</p>
+                        </div>
+                    </div>
+                    <div class="text-center mt-6">
+                        <p class="text-xl font-bold text-[#BDE0FE]">Total: 19 New Test Cases</p>
+                    </div>
+                </div>
+                <div class="bg-[#002D62] rounded-xl shadow-lg p-8 w-full max-w-xl mt-8">
+                     <h3 class="text-xl font-bold text-[#BDE0FE] mb-4 text-center">2025.7 Test Cases</h3>
+                    <div class="grid grid-cols-2 gap-6 text-center">
+                        <div class="bg-[#003D7D] p-6 rounded-lg">
+                            <p class="text-3xl font-bold text-[#BDE0FE]">3</p>
+                            <p class="text-lg text-white mt-1">Plan</p>
+                        </div>
+                        <div class="bg-[#003D7D] p-6 rounded-lg">
+                            <p class="text-3xl font-bold text-[#BDE0FE]">1</p>
+                            <p class="text-lg text-white mt-1">Inventory</p>
+                        </div>
+                    </div>
+                    <div class="text-center mt-6">
+                        <p class="text-xl font-bold text-[#BDE0FE]">Total: 4 New Test Cases</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Total Manual Test Cases Chart and Section -->
+        <section id="manual-testing">
+            <div class="flex flex-col justify-center items-center h-full">
+                <h3 class="text-3xl font-bold text-[#BDE0FE] mb-4">Total Manual Test Case Distribution (Till 2025.7)</h3>
+                <p class="text-white text-lg mb-6 max-w-2xl">A visual breakdown of all test cases executed by module up to release 2025.7.</p>
+                <div class="chart-container w-full max-w-4xl">
+                    <canvas id="manualCasesChart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Overall Automation Section -->
+        <section id="automation">
+            <div class="flex flex-col justify-center items-center h-full">
+                <h3 class="text-3xl font-bold text-[#BDE0FE] mb-4">Overall Automation Coverage</h3>
+                <p class="text-white text-lg mb-6 max-w-2xl">Automation coverage stands at 76% which helps accelerate release cycles and reduce manual effort.</p>
+                <div class="chart-container w-full max-w-2xl">
+                    <canvas id="automationOverallChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Automation Highlights Section -->
+        <section id="automation-highlights">
+            <div class="flex flex-col justify-center items-center h-full">
+                <h2 class="text-3xl font-bold text-center text-[#BDE0FE] mb-6">Digital & FTS Automation Highlights</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+                    <div class="bg-[#002D62] rounded-xl shadow-lg p-8">
+                        <h3 class="text-xl font-bold text-[#BDE0FE] mb-4 border-b border-slate-700 pb-2 text-center">Digital Automation</h3>
+                        <p class="text-white text-lg mb-4">The current level of automation for Digital regression test cases stands at approximately 40%. New scripting activities are currently on hold due to new requirements.</p>
+                        <div class="flex items-center justify-center space-x-4">
+                            <span class="text-6xl font-bold text-[#BDE0FE]">40%</span>
+                            <div class="p-4 bg-[#003D7D] rounded-lg text-center border border-[#0050A4]">
+                                <p class="font-semibold text-[#BDE0FE]">⏸️ New Scripting On Hold</p>
+                                <p class="text-sm text-white">Re-evaluating priorities for evolving requirements.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-[#002D62] rounded-xl shadow-lg p-8">
+                        <h3 class="text-xl font-bold text-[#BDE0FE] mb-4 border-b border-slate-700 pb-2 text-center">FTS Automation Notes</h3>
+                        <ul class="list-disc list-inside space-y-4 text-white text-left">
+                            <li>Scripts have been developed for 2 deals in each Order Type, totaling 8 deals.</li>
+                            <li>These deals will be created as a draft for every Patch/Release (in line with UAT) through Automation.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Current Challenges Section -->
+        <section id="challenges">
+            <div class="flex flex-col justify-center items-center h-full">
+                <h2 class="text-3xl font-bold text-center text-[#BDE0FE] mb-6">Key Digital and FTS Challenges & Highlights</h2>
+                <div class="bg-[#002D62] rounded-xl shadow-lg p-8 w-full max-w-4xl mb-6 page-break-avoid" style="page-break-inside: avoid;">
+                    <h3 class="text-xl font-bold text-[#BDE0FE] mb-4 border-b border-slate-700 pb-2">AOS 2025.7</h3>
+                    <ul class="list-disc list-inside space-y-4 text-white text-left">
+                        <li>
+                            <span class="font-semibold text-[#BDE0FE]">Approval Names Changed (Digital Fox S&E Direct):</span> Script failed due to modified approval names in the "Deal Workspace > Approval Window".
+                        </li>
+                        <li>
+                            <span class="font-semibold text-[#BDE0FE]">Billing Terms (Digital Fox S&E Direct):</span> Script needed updates to handle "Net 30 or Prepay" billing terms, as incorrect selection caused auto-rejection.
+                        </li>
+                        <li>
+                            <span class="font-bold text-[#BDE0FE]">New Requirement (Digital Fox S&E Direct):</span> A new rule, "FNB - Auto Rejection: Inventory not checked within 1 hour of submission" was added, requiring a script update to calculate inventory.
+                        </li>
+                         <li>
+                            <span class="font-semibold text-[#BDE0FE]">Mandatory Fields (Digital Fox S&E PRG):</span> Several auto-rejections were observed as fields were made mandatory, necessitating script updates.
+                        </li>
+                         <li>
+                            <span class="font-semibold text-[#BDE0FE]">Product/Package Name Changes (FTS):</span> The script needs to be updated to select products/packages with new Xpaths due to changes in their names in the Product Chooser.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Past Challenges Section -->
+        <section id="past-challenges">
+            <div class="flex flex-col justify-center items-center h-full">
+                <div class="bg-[#002D62] rounded-xl shadow-lg p-8 w-full max-w-4xl challenge-section" style="page-break-inside: avoid;">
+                    <h3 class="text-xl font-bold text-[#BDE0FE] mb-4 border-b border-slate-700 pb-2">AOS 2025.6</h3>
+                    <ul class="list-disc list-inside space-y-4 text-white text-left">
+                        <li>
+                            <span class="font-semibold text-[#BDE0FE]">New fields added (General):</span> New fields were added to the Deal Workspace, causing the xpaths of other fields to change and scripts to fail.
+                        </li>
+                         <li>
+                            <span class="font-semibold text-[#BDE0FE]">Global Default Organization (Digital Tubi and Direct):</span> This challenge involved a change to the Global Default Organization to Big Ten Network and vice versa.
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-[#002D62] rounded-xl shadow-lg p-8 w-full max-w-4xl mt-6 challenge-section" style="page-break-inside: avoid;">
+                    <h3 class="text-xl font-bold text-[#BDE0FE] mb-4 border-b border-slate-700 pb-2">AOS 2025.3</h3>
+                    <ul class="list-disc list-inside space-y-4 text-white text-left">
+                        <li>
+                            <span class="font-semibold text-[#BDE0FE]">Existing products and packages not set up (Digital Fox S&E):</span> The script was modified to add products/packages as provided by Kevin.
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-[#002D62] rounded-xl shadow-lg p-8 w-full max-w-4xl mt-6 challenge-section" style="page-break-inside: avoid;">
+                    <h3 class="text-xl font-bold text-[#BDE0FE] mb-4 border-b border-slate-700 pb-2">AOS 2025.1</h3>
+                    <ul class="list-disc list-inside space-y-4 text-white text-left">
+                        <li>
+                            <span class="font-semibold text-[#BDE0FE]">Digital Ratecards is blank (Digital Fox S&E):</span> A change was needed in the script to select a different Primary AE for the Digital Ratecard to show up.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- The following two sections are grouped in a grid in the original, but for PDF/PPT,
+             it's better to treat them as individual pages/slides. The print CSS handles this. -->
+        
+        <!-- Tickets Chart -->
+        <section id="tickets">
+            <div class="flex flex-col justify-center items-center h-full">
+                <h3 class="text-3xl font-bold text-[#BDE0FE] mb-4">Operative Tickets Analysis</h3>
+                <p class="text-white text-lg mb-6 max-w-2xl">Analysis of tickets raised for each release. Regression defects formed the majority of issues found.</p>
+                <div class="chart-container w-full max-w-4xl">
+                    <canvas id="ticketsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Test Rail Chart -->
+        <section id="testrail">
+            <div class="flex flex-col justify-center items-center h-full">
+                <h3 class="text-3xl font-bold text-[#BDE0FE] mb-4">Test Rail Execution Performance</h3>
+                <p class="text-white text-lg mb-6 max-w-2xl">Test execution results from Test Rail showing a high pass rate. Low failed count indicates a stable build.</p>
+                <div class="chart-container w-full max-w-4xl">
+                    <canvas id="testRailChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#002855] mt-8 py-6 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+            <p>&copy; 2025 AOS/OnAir QA Team. All rights reserved.</p>
+        </div>
+    </footer>
+
+<script>
+    const ticketsCtx = document.getElementById('ticketsChart').getContext('2d');
+    new Chart(ticketsCtx, {
+        type: 'bar',
+        data: {
+            labels: ['2025.6', '2025.6.1', '2025.6.2', '2025.6.3', '2025.7'],
+            datasets: [
+                {
+                    label: 'Environmental',
+                    data: [4, 1, 3, 0, 3],
+                    backgroundColor: '#ADE8F4',
+                },
+                {
+                    label: 'Regression',
+                    data: [3, 9, 4, 1, 5],
+                    backgroundColor: '#00B4D8',
+                },
+                {
+                    label: 'Failed New Functionality',
+                    data: [1, 2, 0, 0, 3],
+                    backgroundColor: '#0077B6',
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#FFFFFF',
+                        padding: 20,
+                        font: {
+                            family: "'Inter', sans-serif"
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#002855',
+                    titleColor: '#BDE0FE',
+                    bodyColor: '#E0F2FF',
+                    titleFont: {
+                        size: 14,
+                        family: "'Inter', sans-serif"
+                    },
+                    bodyFont: {
+                        size: 12,
+                        family: "'Inter', sans-serif"
+                    },
+                    padding: 10,
+                    borderColor: '#48CAE4',
+                    borderWidth: 1
+                }
+            },
+            scales: {
+                x: {
+                    stacked: true,
+                    grid: {
+                        display: false,
+                        drawBorder: true
+                    },
+                    ticks: {
+                        color: '#FFFFFF',
+                        font: {
+                            family: "'Inter', sans-serif"
+                        }
+                    }
+                },
+                y: {
+                    stacked: true,
+                    grid: {
+                        display: false,
+                        drawBorder: true
+                    },
+                    ticks: {
+                        color: '#FFFFFF',
+                        font: {
+                            family: "'Inter', sans-serif"
+                        }
+                    }
+                }
+            },
+            barPercentage: 0.7,
+            categoryPercentage: 0.8
+        }
+    });
+
+    const testRailCtx = document.getElementById('testRailChart').getContext('2d');
+    new Chart(testRailCtx, {
+        type: 'bar',
+        data: {
+            labels: ['2025.6', '2025.6.1', '2025.6.2', '2025.6.3', '2025.7'],
+            datasets: [
+                {
+                    label: 'Passed',
+                    data: [540, 540, 543, 546, 552],
+                    backgroundColor: '#00B4D8',
+                },
+                {
+                    label: 'Retested',
+                    data: [7, 4, 5, 0, 8],
+                    backgroundColor: '#ADE8F4',
+                },
+                {
+                    label: 'Failed',
+                    data: [1, 4, 0, 2, 3],
+                    backgroundColor: '#D62828',
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#FFFFFF',
+                        padding: 20,
+                        font: {
+                            family: "'Inter', sans-serif"
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#002855',
+                    titleColor: '#BDE0FE',
+                    bodyColor: '#E0F2FF',
+                    titleFont: {
+                        size: 14,
+                        family: "'Inter', sans-serif"
+                    },
+                    bodyFont: {
+                        size: 12,
+                        family: "'Inter', sans-serif"
+                    },
+                    padding: 10,
+                    borderColor: '#48CAE4',
+                    borderWidth: 1
+                }
+            },
+            scales: {
+                x: {
+                    stacked: true,
+                    grid: {
+                        display: false,
+                        drawBorder: true
+                    },
+                    ticks: {
+                        color: '#FFFFFF',
+                        font: {
+                            family: "'Inter', sans-serif"
+                        }
+                    }
+                },
+                y: {
+                    stacked: true,
+                    grid: {
+                        display: false,
+                        drawBorder: true
+                    },
+                    ticks: {
+                        color: '#FFFFFF',
+                        font: {
+                            family: "'Inter', sans-serif"
+                        }
+                    }
+                }
+            },
+            barPercentage: 0.7,
+            categoryPercentage: 0.8
+        }
+    });
+
+    const manualCasesCtx = document.getElementById('manualCasesChart').getContext('2d');
+    new Chart(manualCasesCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Product', 'Ratecard', 'Plan', 'Inventory', 'Product Reports', 'Ratecard Reports', 'Plan Reports', 'Flowchart Reports'],
+            datasets: [{
+                label: 'Test Cases', 
+                data: [40, 104, 229, 78, 8, 23, 46, 24], 
+                backgroundColor: '#00B4D8',
+                borderColor: '#ADE8F4',
+                borderWidth: 1,
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        display: false,
+                        drawBorder: true,
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#FFFFFF',
+                        font: {
+                            family: "'Inter', sans-serif"
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false,
+                        drawBorder: true,
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#FFFFFF',
+                        font: {
+                            family: "'Inter', sans-serif"
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    const automationOverallCtx = document.getElementById('automationOverallChart').getContext('2d');
+    new Chart(automationOverallCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Automated', 'Not Automated'],
+            datasets: [{
+                label: 'Automation Coverage',
+                data: [76, 24],
+                backgroundColor: ['#00B4D8', '#90EE90'],
+                borderColor: ['#001D3D', '#001D3D'],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#FFFFFF',
+                    }
+                },
+                tooltip: {
+                    // Only show tooltip for the 'Automated' segment
+                    callbacks: {
+                        label: function(context) {
+                            if (context.label === 'Automated') {
+                                return 'Automated: ' + context.formattedValue + '%';
+                            }
+                            return null;
+                        }
+                    }
+                }
+            },
+            
+        },
+        plugins: [{ 
+            id: 'beforeDraw',
+            beforeDraw: function(chart) {
+                const width = chart.width,
+                    height = chart.height,
+                    ctx = chart.ctx;
+                ctx.restore();
+                const fontSize = (height / 114).toFixed(2);
+                ctx.font = fontSize + "em Inter";
+                ctx.textBaseline = "middle";
+                const text = "76%"; 
+                const textX = Math.round((width - ctx.measureText(text).width) / 2);
+                const textY = height / 2;
+                ctx.fillStyle = '#BDE0FE'; 
+                ctx.fillText(text, textX, textY);
+                ctx.save();
+            }
+        }]
+    });
+
+    // New Manual Test Cases Chart (Note: This canvas ID 'newManualCasesChart' is not present in your HTML
+    // if you intend to use this chart, you would need to add a canvas element with this ID in the HTML)
+    const newManualCasesCtx = document.getElementById('newManualCasesChart');
+    if (newManualCasesCtx) {
+        new Chart(newManualCasesCtx.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Plan', 'Inventory'],
+                datasets: [{
+                    label: 'New Test Cases',
+                    data: [3, 1],
+                    backgroundColor: '#00B4D8',
+                    borderColor: '#ADE8F4',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            display: false,
+                            drawBorder: true,
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#FFFFFF',
+                            font: {
+                                family: "'Inter', sans-serif"
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false,
+                            drawBorder: true,
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#FFFFFF',
+                            font: {
+                                family: "'Inter', sans-serif"
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

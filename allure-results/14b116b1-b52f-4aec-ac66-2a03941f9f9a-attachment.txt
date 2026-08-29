@@ -1,0 +1,13 @@
+[
+  'ADIDAS ORIGINAL',
+  'ZARA COAT 3',
+  'iphone 13 pro',
+  'qwerty',
+  'car',
+  'iPhone QA Max',
+  '{{productName}}',
+  'Laptop',
+  'Laptop'
+]
+Total items found in cart: 3
+Generated Order ID:  | 6a9138cb21054ba465f9694b | 
