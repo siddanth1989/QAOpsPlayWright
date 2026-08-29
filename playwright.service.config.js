@@ -10,10 +10,12 @@ module.exports = defineConfig(
     connectTimeout: 3 * 60 * 1000,
     os: ServiceOS.LINUX,
     credential: new DefaultAzureCredential(),
+  }),
+  {
     reporter: [
       ['list'],
-      ['html', { open: 'never', outputFolder: 'playwright-report' }],
       ['@azure/playwright/reporter'],
+      ['html', { open: 'never', outputFolder: 'playwright-report' }],
     ],
-  })
+  }
 );
