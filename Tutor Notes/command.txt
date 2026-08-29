@@ -4,9 +4,19 @@ az storage account show \
   --resource-group "rrd" \
   --query id -o tsv
 
+GitHub Code - YAML
+
+az ad sp create-for-rbac `
+  --name "github-playwright" `
+  --role "Contributor" `
+  --scopes "/subscriptions/67fffe22-e244-4c7c-b6e9-547d0648491f/resourceGroups/RRD" `
+  --json-auth
 
 
-
+az role assignment create `
+  --assignee $(az ad sp list --display-name "sp-playwright-qaops" --query "[0].appId" -o tsv) `
+  --role "Storage Blob Data Contributor" `
+  --scope $(az storage account show --name pwstrgrrd9e68 --resource-group RRD --query id -o tsv)
 
 //
 
