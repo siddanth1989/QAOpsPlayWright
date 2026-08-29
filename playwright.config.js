@@ -9,8 +9,6 @@ const config = defineConfig({
     '**/manual_tests/**',
     '**/PlayWrightAutomation Tutor Code/**',
     '**/playwright-migration-fox/**',
-    '**/*hrmstest*',
-    '**/*WebAPIUtils*',
   ],
   testMatch: /.*\.spec\.js$/,
   timeout: 30 * 1000,
@@ -30,6 +28,7 @@ const config = defineConfig({
   ],
 
   reporter: [
+    ['list'],
     ['html', { open: 'never' }],
     ['junit', { outputFile: 'results.xml' }],
   ],
