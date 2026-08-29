@@ -1,6 +1,6 @@
 const {test,expect}=   require ('@playwright/test');
 
-//Calendar Spec
+//Calendar Spec File
 
 test('Calendar validations', async ({ page }) => 
     
