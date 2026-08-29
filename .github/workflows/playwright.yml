@@ -32,8 +32,7 @@ jobs:
         AZURE_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
         AZURE_TENANT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}
         DEBUG: pw:api*
-      run: npx playwright test tests/ --config=playwright.service.config.js --workers=4 --reporter=list
-
+      run: npx playwright test tests/ --config=playwright.service.config.js --workers=4
     - uses: actions/upload-artifact@v4
       if: always()
       with:
